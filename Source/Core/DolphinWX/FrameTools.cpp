@@ -310,13 +310,6 @@ void CFrame::BootGame(const std::string& filename)
   if (!bootfile.empty())
   {
     StartGame(bootfile);
-    if (UseDebugger && g_pCodeWindow)
-    {
-      if (g_pCodeWindow->HasPanel<CWatchWindow>())
-        g_pCodeWindow->GetPanel<CWatchWindow>()->LoadAll();
-      if (g_pCodeWindow->HasPanel<CBreakPointWindow>())
-        g_pCodeWindow->GetPanel<CBreakPointWindow>()->LoadAll();
-    }
   }
 }
 
@@ -371,8 +364,8 @@ void CFrame::OnTASInput(wxCommandEvent& event)
 {
   for (int i = 0; i < 4; ++i)
   {
-    if (SConfig::GetInstance().m_SIDevice[i] != SIDEVICE_NONE &&
-        SConfig::GetInstance().m_SIDevice[i] != SIDEVICE_GC_GBA)
+    if (SConfig::GetInstance().m_SIDevice[i] != SerialInterface::SIDEVICE_NONE &&
+        SConfig::GetInstance().m_SIDevice[i] != SerialInterface::SIDEVICE_GC_GBA)
     {
       g_TASInputDlg[i]->CreateGCLayout();
       g_TASInputDlg[i]->Show();
@@ -464,7 +457,7 @@ void CFrame::OnRecord(wxCommandEvent& WXUNUSED(event))
 
   for (int i = 0; i < 4; i++)
   {
-    if (SIDevice_IsGCController(SConfig::GetInstance().m_SIDevice[i]))
+    if (SerialInterface::SIDevice_IsGCController(SConfig::GetInstance().m_SIDevice[i]))
       controllers |= (1 << i);
 
     if (g_wiimote_sources[i] != WIIMOTE_SRC_NONE)
@@ -844,11 +837,7 @@ void CFrame::DoStop()
 
     if (UseDebugger && g_pCodeWindow)
     {
-      if (g_pCodeWindow->HasPanel<CWatchWindow>())
-        g_pCodeWindow->GetPanel<CWatchWindow>()->SaveAll();
       PowerPC::watches.Clear();
-      if (g_pCodeWindow->HasPanel<CBreakPointWindow>())
-        g_pCodeWindow->GetPanel<CBreakPointWindow>()->SaveAll();
       PowerPC::breakpoints.Clear();
       PowerPC::memchecks.Clear();
       if (g_pCodeWindow->HasPanel<CBreakPointWindow>())
