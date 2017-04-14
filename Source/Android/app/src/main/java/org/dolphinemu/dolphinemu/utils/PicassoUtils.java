@@ -22,7 +22,7 @@ public class PicassoUtils {
 					.centerCrop()
 					.noFade()
 					.noPlaceholder()
-					.config(Bitmap.Config.RGB_565)
+					.config(Bitmap.Config.ARGB_8888)
 					.error(R.drawable.no_banner)
 					.into(imageView);
 		} else {
@@ -35,7 +35,7 @@ public class PicassoUtils {
 					.fit()
 					.noFade()
 					.noPlaceholder()
-					.config(Bitmap.Config.RGB_565)
+					.config(Bitmap.Config.ARGB_8888)
 					.error(R.drawable.no_banner)
 					.into(imageView);
 		}
